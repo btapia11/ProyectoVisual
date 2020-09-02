@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include<string.h>
 #include <stdlib.h>
-#include <math.h>
 
-int main(){
 
-return 0;
-
+void main(){
+    printf("Hola mi primero git en c Majo Robles");
 }
