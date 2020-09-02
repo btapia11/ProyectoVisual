@@ -1,0 +1,2 @@
+# ProyectoVisual
+La Fundación Virgen de la Merced requiere un aplicación en C que almacene los datos de los participantes que se inscriben para la vuelta 10k en Quito a llevarse a efecto el 19 de Septiembre de 2020, el plazo para inscribirse será del 31 de Agosto de 2020 al 07 de Septiembre del 2020, registre el tiempo de la carrera e imprima: La nómina de los inscritos por categoría y el resultados de los tres primeros puestos por categoría correspondientes,
