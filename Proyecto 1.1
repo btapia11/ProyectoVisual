@@ -1,0 +1,191 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define N 20 //TAMAÑO DEL VECTOR
+
+//estructura INTERNA
+struct fecha{
+    int mes;
+    int dia;
+    int anio;
+};
+
+struct tiempo{
+    int hh;
+    int mint;
+    int ss;
+};
+
+//estructura EXTERNA
+struct corredor{
+    char nombre [50];
+    char apellido[50];
+    int dorsal;
+    struct fecha ingreso;
+    char genero[2];
+    int categoria;
+}corredores[N];
+
+int validar_tiempo(struct tiempo tiempo){
+
+    if((tiempo.hh >= 0 && tiempo.hh <=23)&& (tiempo.mint >= 0 && tiempo.mint <=59)&&(tiempo.ss >= 0 && tiempo.ss <=59) )
+        return 1;
+    else
+        return 0;
+}
+
+void guardar_txt();
+
+void guardar_txt(){
+    int test;
+    int bandera = 0;
+    int bandera2;
+    char nombre2[50];
+    int i = 0;
+
+    FILE* fichero;
+
+
+    while(bandera==0){
+        bandera2 = 0;
+        fflush(stdin);
+        srand(time(NULL)); //Para reiniciar el contador de los valores randomicos.
+
+        printf("\n Ingrese su nombre:  ");
+        gets(nombre2);
+        strupr(nombre2);
+        //scanf("%s",nombre2);//gets(nombre2);
+
+        if(strcmp(nombre2,"FIN")==0)
+        {
+            bandera = 1;
+        }
+        else{
+            test = rand () % 9999;
+            strcpy(corredores[i].nombre, nombre2 );
+
+            printf("\nIngrese la fecha  (mm/ dd/ aa):  \n");
+            scanf("%d/%d/%d",&corredores[i].ingreso.mes,&corredores[i].ingreso.dia,&corredores[i].ingreso.anio);
+
+            corredores[i].dorsal = test;
+
+            printf("Ingrese El Genero (M si es Masculino F si es Femenino)");
+            scanf("%s",corredores[i].genero);
+            strupr(corredores[i].genero);
+
+            while(bandera2==0){
+
+                if((strcmp(corredores[i].genero, "F") == 0)||(strcmp(corredores[i].genero, "M") == 0)){
+
+                    bandera2 = 1;
+
+                }
+                else{
+                    bandera2 = 0;
+                    printf("Ingrese El Genero correctamente (M si es Masculino F si es Femenino)");
+                    scanf("%s",corredores[i].genero);
+                    strupr(corredores[i].genero);
+                }
+
+            }
+
+            fichero = fopen("majo.txt", "a");
+            fprintf(fichero,"%s\n",corredores[i].nombre);
+            fprintf(fichero,"%d/%d/%d\n",corredores[i].ingreso.mes,corredores[i].ingreso.dia,corredores[i].ingreso.anio);
+            fprintf(fichero,"%s\n",corredores[i].genero);
+            fprintf(fichero,"%d\n",corredores[i].dorsal);
+            fprintf(fichero, "%c", '\n');
+
+            fclose(fichero);
+
+            bandera =0;
+            i++;
+
+        }
+
+    }
+    for(int j=0;j<i;j++){
+    printf("%s \n",corredores[j].nombre);
+    }
+}
+//DEFINICION de funciones
+void mostrar_corredor();
+
+void mostrar_corredor(){
+    char linea[1024];
+    FILE *fich;
+    fich = fopen("majo.txt", "r");
+
+    if(fich == NULL){
+
+        printf("el no contiene un archivo txt");
+
+    }
+    else{
+        while(fgets(linea, 1024, (FILE*) fich)) {
+            printf(" %s \n", linea);
+        }
+        fclose(fich);
+    }
+    //Lee línea a línea y escribe en pantalla hasta el fin de fichero
+}
+
+
+void mostrar_ordenados(){
+    FILE * fp;
+    char nombre [100];
+    char apellido [100];
+    int camiseta;
+    char genero;
+    int mes;
+    int dia;
+    int anio;
+    fp = fopen ("majo.txt" , "r");
+    while(!feof(fp)){
+        fscanf(fp,"%s%s",&nombre,&apellido);
+        fscanf(fp,"%d/%d/%d",&mes,&dia,&anio);
+        fscanf(fp,"%d",&camiseta);
+        fscanf(fp,"%s",&genero);
+        printf("%s %s  \t",nombre,apellido);
+        printf("%d  \n",camiseta);
+    }
+}
+//FUNCIÓN PRINCIPAL
+int main(){
+    char repite = 1;
+    int opcion = -1;
+    do {
+        system("cls");
+        printf("\n\t\t\t\tMENU PRINCIPAL\n");
+        printf("\n\t\t[1]. Insertar Corredor \n");
+        printf("\t\t[2]. Mostrar listado de Corredores\n");
+        printf("\t\t[3]. Mostrar listado de Corredores\n");
+        printf("\t\t[7]. Salir\n");
+        printf("\n\t\tIngrese su opción: [ ]\b\b");
+
+        /* Lectura segura de un entero */
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+
+            case 1:
+                guardar_txt();
+                break;
+
+            case 2:
+                mostrar_corredor();
+                break;
+
+            case 3:
+                mostrar_ordenados();
+                break;
+
+            case 7:
+                repite = 0;
+                break;
+            }
+        system("pause");
+    } while (repite);
+
+}
